@@ -5,9 +5,9 @@ import System.IO (hSetBuffering, stdout, BufferMode(..))
 main =
     do
     initialiseIO
-    putStrLn ("known errors = " ++ show allErrors)
-    error <- getElement "error"
-    putStrLn (show error ++ " results in: " ++ show (error2Result error))
+    putStrLn ("known results = " ++ show allResults)
+    results <- getElement "results"
+    putStrLn (show results ++ " results: " ++ show (results2Result results))
     
 initialiseIO =
     do
@@ -27,13 +27,13 @@ data Result = Zero | Infinity | ABitDifferent | VeryDifferent
               Bounded, -- default minBound and maxBound
               Enum) -- default sequencing (needed for .. ranges)
 
-allErrors :: [Error] -- ie it is a list of PL elements
-allErrors = [minBound .. maxBound]
+allResults :: [Result] -- ie it is a list of PL elements
+allResults = [minBound .. maxBound]
 
-error2Result FP_Rounding = ABitDifferent
-error2Result FP_Overflow = Infinity
-error2Result FP_Underflow = Zero
-error2Result Int_Overflow = VeryDifferent
+results2Result  ABitDifferent= FP_Rounding 
+results2Result Infinity= FP_Overflow
+results2Result Zero = FP_Underflow 
+results2Result VeryDifferent= Int_Overflow
 
 -- The code below should not be changed and does not need to be fully understood.
 
